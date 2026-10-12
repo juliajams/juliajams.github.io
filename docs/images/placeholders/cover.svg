@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b1b18"/>
+      <stop offset="1" stop-color="#0c0c0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1250" fill="url(#g)"/>
+  <g stroke="#2c2c27" stroke-width="2" fill="none">
+    <path d="M0 0L1000 1250M1000 0L0 1250"/>
+    <rect x="80.0" y="100.0" width="840.0" height="1050.0"/>
+  </g>
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="45" fill="#6f6b62" letter-spacing="2">COVER IMAGE</text>
+</svg>

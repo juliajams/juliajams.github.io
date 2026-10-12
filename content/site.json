@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Yuliia Shtefan | Brand and Web Design",
+    "description": "Professional designer with 7+ years of experience in graphic, web, and UI/UX design.",
+    "logoMark": "y",
+    "favicon": "images/favicon.svg",
+    "ogImage": "images/placeholders/wide.svg",
+    "siteUrl": ""
+  },
+  "hero": {
+    "eyebrow": "BRAND & UX DESIGNER",
+    "name": "Yuliia Shtefan",
+    "image": "images/placeholders/portrait.svg",
+    "imageAlt": "Photo from Yuliia's design work",
+    "text": "8 years of creating designs that are both functional and aesthetical, while effectively solving business problems. That's it.",
+    "ctaLabel": "See Projects",
+    "ghost": "Work",
+    "imageGrayscale": true
+  },
+  "marquee": [
+    "Brand Identity",
+    "Product Design",
+    "UX Design",
+    "Motion Design",
+    "UI Design",
+    "Illustration",
+    "Email Marketing",
+    "UI/UX Design"
+  ],
+  "projectsSection": {
+    "eyebrow": "Featured Works",
+    "title": "Projects"
+  },
+  "projects": [
+    {
+      "slug": "evergreen",
+      "name": "Evergreen",
+      "category": "BRAND IDENTITY & DESIGN",
+      "year": "2025",
+      "yearRange": "2024–2025",
+      "background": "images/placeholders/wide.svg",
+      "cover": "images/placeholders/cover.svg",
+      "coverAlt": "Evergreen brand identity",
+      "frameTitle": "EVERGREEN",
+      "sunburst": true,
+      "services": "Branding, UI/UX Design",
+      "brief": "A nature-integrated hotel and resort brand, built around sustainability and a deep connection to its coastal setting.",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Evergreen is a new hotel and resort located in Copalis Beach, Washington. The concept centers on a luxurious yet nature-integrated experience, capitalizing on the area's coastal beauty rather than competing with it."
+        },
+        {
+          "type": "text",
+          "text": "The branding plays a central role in that positioning. Instead of reading as another beachfront hotel, Evergreen's identity emphasizes sustainability and a lasting connection to the surrounding environment."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen brand identity presentation"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "Several logotype versions were developed so the brand could communicate clearly across different media: a wordmark, a symbol, and a seal, each suited to different space constraints. The seal doubles as a decorative and supplementary mark."
+        },
+        {
+          "type": "text",
+          "text": "The color palette leans on natural tints drawn from Evergreen's own location — clean, contrasting tones that read as an \"out in the woods\" experience. Typography was deliberately limited to two families to keep every touchpoint cohesive."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen logo system"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen color palette and typography"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "For the companion mobile app, secondary research included a deep look at existing smart-home practices — surveys and focus-group interviews aimed at surfacing the real pain points guests hit during a stay."
+        },
+        {
+          "type": "text",
+          "text": "That research showed guests were enthusiastic about controlling multiple room devices and requesting services from one place, but wary of complexity — they wanted fast, obvious access to controls. Following the resulting user journey map, the key actions were brought forward onto the home screen, with tabs held in reserve for secondary features."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen mobile app home screen"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "text": "The interface stays simple to navigate, with contrast between UI elements built to WCAG standards for an inclusive experience with less eye fatigue. Gestalt principles guided the UX work throughout — grouping by region, layout grids for continuity, and consistent color for similarity — resulting in a clear, cohesive visual hierarchy."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen app screens"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Evergreen app screens detail"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hexcapes",
+      "name": "Hexcapes",
+      "category": "BRAND STRATEGY & IDENTITY",
+      "year": "2024",
+      "yearRange": "2023–2024",
+      "background": "images/placeholders/wide.svg",
+      "cover": "images/placeholders/cover.svg",
+      "coverAlt": "Hexcapes brand identity",
+      "frameTitle": "HEXCAPES",
+      "sunburst": false,
+      "services": "Branding, UI/UX Design",
+      "brief": "A modern, recognizable identity for a cybersecurity company built around AI-driven threat prediction for government clients.",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Hexcapes is a cybersecurity company building solutions tailored to government needs. Using AI and machine learning, its team works to predict and prevent cyber threats before they happen."
+        },
+        {
+          "type": "text",
+          "text": "The re-brand set out to craft a recognizable, modern logotype backed by a full identity system — imagery, brand voice, typography, and iconography, plus social templates — all built to meet WCAG accessibility standards."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes logo animation"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes brand presentation"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes visual identity detail"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes iconography"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes brand guidelines spread"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes social templates"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Hexcapes application design"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mos",
+      "name": "Museum of\nSound",
+      "category": "BRAND IDENTITY",
+      "year": "2023",
+      "yearRange": "2023",
+      "background": "images/placeholders/wide.svg",
+      "cover": "images/placeholders/cover.svg",
+      "coverAlt": "Museum of Sound brand identity",
+      "frameTitle": "MUSEUM\nOF SOUND",
+      "sunburst": false,
+      "services": "Brand Identity, Copywriting",
+      "brief": "A modern, inclusive identity for a museum reimagining how visitors experience sound.",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "The Museum of Sound's branding centers on accessibility and immersion — a move away from the traditional, static museum experience toward something dynamic and interactive. The identity foregrounds sound's multifaceted nature: its historical significance, but also its emotional, cultural, and technological impact."
+        },
+        {
+          "type": "text",
+          "text": "The system, including logo and full visual identity, was built to feel modern and engaging while welcoming visitors of every age and background into the world of sound."
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound brand presentation"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound logo system"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound signage"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound print collateral"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound environmental graphics"
+            }
+          ]
+        },
+        {
+          "type": "images",
+          "images": [
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound merchandise"
+            },
+            {
+              "src": "images/placeholders/gallery.svg",
+              "alt": "Museum of Sound digital application"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "expertise": {
+    "eyebrow": "What I Do",
+    "title": "Expertise",
+    "items": [
+      {
+        "title": "Brand Strategy",
+        "icon": "target",
+        "list": [
+          "Research & Insights",
+          "Unique Positioning",
+          "Mission & Purpose",
+          "Competitor Analysis",
+          "Style Definition"
+        ]
+      },
+      {
+        "title": "Visual Identity",
+        "icon": "eye",
+        "list": [
+          "Logotype & Brand Guidelines",
+          "Illustration",
+          "Art Direction",
+          "Motion",
+          "Typography & Color",
+          "Email & SMM Design"
+        ]
+      },
+      {
+        "title": "Web & UI/UX",
+        "icon": "shapes",
+        "list": [
+          "UI/UX Design",
+          "Research",
+          "User Testing",
+          "Product Prototype",
+          "Mobile App Design",
+          "Interaction Design"
+        ]
+      }
+    ]
+  },
+  "about": {
+    "eyebrow": "Thanks for watching!\nA little more you may want to know:",
+    "paragraphs": [
+      "With Master's Degree in Computer Science followed by training in international design schools, and my experience in major corporations, I have developed a distinct approach to solving design problems.",
+      "As a committed brand and product designer, I consistently learn and employ the most effective methods in brand identity tactics and visual design creation."
+    ],
+    "buttonLabel": "Back To Projects"
+  },
+  "contact": {
+    "inquiryLabel": "Inquiry",
+    "email": "contact@yuliiashtefan.com",
+    "locationLabel": "Location",
+    "location": "Milwaukee WI",
+    "socialLabel": "Let's Stay in Touch",
+    "social": [
+      {
+        "icon": "instagram",
+        "label": "Instagram",
+        "url": "https://www.instagram.com/waybetter.letter/"
+      },
+      {
+        "icon": "dribbble",
+        "label": "Dribbble",
+        "url": "https://dribbble.com/yuliiashtefan"
+      },
+      {
+        "icon": "behance",
+        "label": "Behance",
+        "url": "https://www.behance.net/yuliiashtefan"
+      }
+    ]
+  }
+}

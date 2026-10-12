@@ -1,0 +1,13 @@
+{
+  "name": "yuliia-shtefan-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static portfolio site (docs/) with a local visual editor",
+  "scripts": {
+    "editor": "node serve.mjs",
+    "build": "node build.mjs",
+    "preview": "node build.mjs && python3 -m http.server 8000 --directory docs"
+  },
+  "engines": { "node": ">=18" }
+}
