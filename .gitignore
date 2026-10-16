@@ -1,0 +1,30 @@
+# ---- Operating system ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*~
+
+# ---- Logs and temp files ----
+*.log
+npm-debug.log*
+*.tmp
+
+# ---- Node (this project has no dependencies, but just in case) ----
+node_modules/
+
+# ---- Secrets: never commit tokens or keys ----
+.env
+.env.*
+*.pem
+*token*.txt
+
+# ---- Deliberately NOT ignored ----
+# docs/            the finished website that GitHub Pages serves
+# content/         your text and structure (site.json)
+# images/          placeholders and everything you upload via the editor
+# fonts/ css/ js/  design and scripts
