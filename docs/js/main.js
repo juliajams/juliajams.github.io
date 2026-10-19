@@ -18,6 +18,7 @@
   ready(function () {
     headerScroll();
     navToggle();
+    themeToggle();
     revealOnScroll();
     year();
     if (editor) return;                                      // keep text plain so it can be edited in place
@@ -70,6 +71,46 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
     targets.forEach(function (el) { io.observe(el); });
+  }
+
+  /* ------------------------- light / dark theme switch ------------------------ */
+
+  // The page already has data-theme (set in <head> before first paint). This wires up the button,
+  // remembers the choice, and tells warp.js / hero.js so they can repaint in the new colours.
+  function themeToggle() {
+    var btn = document.querySelector('[data-theme-toggle]');
+    var meta = document.querySelector('meta[name="theme-color"]');
+    var def = root.getAttribute('data-theme-default');
+    var forced = root.hasAttribute('data-forced-theme');           // the editor can pin a theme for its preview
+    function current() { return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+    function sync() {
+      var t = current();
+      if (meta) meta.setAttribute('content', t === 'light' ? '#f4f1ea' : '#0a0a0a');
+      if (btn) {
+        btn.setAttribute('aria-label', t === 'light' ? 'Switch to dark mode' : 'Switch to light mode');
+        btn.setAttribute('aria-pressed', String(t === 'light'));
+      }
+    }
+    function apply(t, remember) {
+      root.classList.add('theme-anim');
+      root.setAttribute('data-theme', t);
+      if (remember) { try { localStorage.setItem('theme', t); } catch (e) {} }
+      sync();
+      document.dispatchEvent(new CustomEvent('themechange', { detail: t }));
+      setTimeout(function () { root.classList.remove('theme-anim'); }, 650);
+    }
+    sync();
+    if (btn) btn.addEventListener('click', function () { apply(current() === 'light' ? 'dark' : 'light', !forced); });
+
+    // With no saved choice and the site set to "follow the device", follow it live.
+    if (!forced && def === 'system' && window.matchMedia) {
+      var mq = matchMedia('(prefers-color-scheme: light)');
+      var onChange = function (e) {
+        var saved; try { saved = localStorage.getItem('theme'); } catch (x) {}
+        if (!saved) apply(e.matches ? 'light' : 'dark', false);
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+    }
   }
 
   function year() {
@@ -219,7 +260,8 @@
     box.appendChild(im);
     document.body.appendChild(box);
 
-    var x = 0, y = 0, tx = 0, ty = 0, vx = 0, shown = false, running = false;
+    var x = 0, y = 0, tx = 0, ty = 0, vx = 0, shown = false, running = false, arrow = null;
+    var FADE = 80;                       // px: the image starts fading this far from the arrow button
 
     function loop() {
       var px = x;
@@ -228,6 +270,17 @@
       vx = vx * 0.85 + (x - px) * 0.15;
       var rot = Math.max(-14, Math.min(14, vx * 1.2));
       box.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0) translate(-50%,-50%) rotate(' + rot.toFixed(2) + 'deg)';
+
+      // Fade out as the image gets close to, or covers, the row's arrow button.
+      var alpha = 1;
+      if (shown && arrow) {
+        var b = box.getBoundingClientRect(), a = arrow.getBoundingClientRect();
+        var gx = Math.max(b.left - a.right, a.left - b.right, 0);
+        var gy = Math.max(b.top - a.bottom, a.top - b.bottom, 0);
+        alpha = Math.min(1, Math.hypot(gx, gy) / FADE);
+      }
+      box.style.opacity = shown ? alpha.toFixed(3) : '0';
+
       if (shown || Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) requestAnimationFrame(loop); else running = false;
     }
     function run() { if (!running) { running = true; requestAnimationFrame(loop); } }
@@ -235,13 +288,14 @@
     rows.forEach(function (row) {
       row.addEventListener('pointerenter', function (e) {
         im.src = row.getAttribute('data-cover');
+        arrow = row.querySelector('.wk-arrow');
         if (!shown) { x = tx = e.clientX; y = ty = e.clientY; }
         shown = true;
         box.classList.add('on');
         run();
       });
       row.addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; run(); });
-      row.addEventListener('pointerleave', function () { shown = false; box.classList.remove('on'); });
+      row.addEventListener('pointerleave', function () { shown = false; box.classList.remove('on'); box.style.opacity = '0'; });
     });
   }
 })();

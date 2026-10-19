@@ -60,7 +60,8 @@ const state = {
   blobUrls: new Map(),       // new image path -> blob: URL for previewing
   openSecs: new Set(['hero']),
   openProjects: new WeakSet(),
-  fx: false,                 // preview with live effects instead of click-to-edit
+  fx: false,
+  theme: 'dark',             // which theme the preview shows (the site itself also has a visitor toggle)                 // preview with live effects instead of click-to-edit
   gh: loadGh()
 };
 
@@ -86,7 +87,7 @@ function isDirty() {
 }
 
 function normalize(c) {
-  c.meta ||= {}; c.meta.siteUrl ??= '';
+  c.meta ||= {}; c.meta.siteUrl ??= ''; c.meta.defaultTheme ??= 'system';
   c.hero ||= {};
   c.marquee ||= [];
   c.projectsSection ||= { eyebrow: '', title: '' };
@@ -96,7 +97,7 @@ function normalize(c) {
   c.about ||= { eyebrow: '', paragraphs: [], buttonLabel: '' };
   c.about.paragraphs ||= [];
   c.contact ||= {};
-  c.hero.badge ??= '';
+  c.hero.badge ??= ''; c.hero.visual ??= 'scene';
   c.contact.headline ??= "Let's talk";
   c.contact.social ||= [];
   c.expertise.items.forEach((it) => { it.list ||= []; });
@@ -120,8 +121,8 @@ function renderPreview(keepScroll = true) {
   const c = state.content;
   // 'Edit' mode: plain text you can click and type into. 'Effects' mode: the real site, with the warp animations.
   const o = state.fx
-    ? { fx: true, base: SITE_ROOT, resolve: (p) => state.blobUrls.get(p) }
-    : { preview: true, base: SITE_ROOT, resolve: (p) => state.blobUrls.get(p) };
+    ? { fx: true, theme: state.theme, base: SITE_ROOT, resolve: (p) => state.blobUrls.get(p) }
+    : { preview: true, theme: state.theme, base: SITE_ROOT, resolve: (p) => state.blobUrls.get(p) };
   let html;
   try {
     html = state.page === 'home' ? renderHome(c, o) : renderProject(c, state.page, o);
@@ -250,6 +251,14 @@ $('#mode').addEventListener('click', (e) => {
   toast(state.fx ? 'Effects mode: this is how visitors see it. Switch back to Edit to type in the preview.' : 'Edit mode: click any text to type, click any image to replace it.');
 });
 
+$('#theme').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-theme]');
+  if (!b) return;
+  state.theme = b.dataset.theme;
+  document.querySelectorAll('#theme button').forEach((x) => x.classList.toggle('on', x === b));
+  renderPreview(true);
+});
+
 window.addEventListener('beforeunload', (e) => {
   if (isDirty()) { e.preventDefault(); e.returnValue = ''; }
 });
@@ -285,6 +294,14 @@ function textField(obj, key, label, opts = {}) {
   });
   bindings.push({ el, obj, key });
   return field(label, el, opts.hint);
+}
+
+// A select whose visible labels differ from the stored values: pairs = [[value, label], ...]
+function choiceField(obj, key, label, pairs, hint) {
+  const el = h('select', {}, pairs.map(([v, l]) => h('option', { value: v }, l)));
+  el.value = obj[key];
+  el.addEventListener('change', () => { obj[key] = el.value; changed(); renderPanel(); });
+  return field(label, el, hint);
 }
 
 function selectField(obj, key, label, options) {
@@ -477,8 +494,10 @@ function homeTab() {
       textField(c.hero, 'text', 'Intro text', { area: true, rows: 4 }),
       textField(c.hero, 'ctaLabel', 'Link text'),
       textField(c.hero, 'badge', 'Circular text', { hint: 'Spins around the arrow button beside the headline. Leave empty to hide it.' }),
-      imageField(c.hero, 'image', 'Photo', 'imageAlt'),
-      checkField(c.hero, 'imageGrayscale', 'Show photo in black & white', true)),
+      choiceField(c.hero, 'visual', 'Hero visual', [['scene', '3D scene (no image needed)'], ['photo', 'Interactive photo']],
+        'The big interactive area beside the intro. The 3D scene can be dragged to rotate; the photo bends under the cursor. Use Effects mode to try it.'),
+      c.hero.visual === 'photo' ? imageField(c.hero, 'image', 'Photo', 'imageAlt') : h('p', { class: 'hint' }, 'Choose “Interactive photo” above to use a photo here.'),
+      c.hero.visual === 'photo' ? checkField(c.hero, 'imageGrayscale', 'Black & white (colour appears around the cursor)', true) : null),
 
     section('marquee', 'Scrolling tags',
       stringList(c.marquee, { add: 'Add tag', placeholder: 'e.g. Brand Identity' })),
@@ -716,7 +735,8 @@ function siteTab() {
     section('seo', 'Site & search', 
       textField(c.meta, 'title', 'Browser tab / Google title'),
       textField(c.meta, 'description', 'Description for Google', { area: true, rows: 3 }),
-      textField(c.meta, 'logoMark', 'Logo letter', { hint: 'The orange letter at the top left.' }),
+      choiceField(c.meta, 'defaultTheme', 'Default colour theme', [['system', 'Follow the visitor’s device'], ['dark', 'Dark'], ['light', 'Light']],
+        'Visitors can always switch with the sun/moon button; their choice is remembered on their device.'),
       textField(c.meta, 'siteUrl', 'Website address', {
         placeholder: 'https://yourname.github.io/portfolio/',
         hint: 'Used for link previews. Filled in automatically on first publish; change it if you add a custom domain.'

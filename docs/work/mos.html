@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-default="system">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Museum of Sound — Yuliia Shtefan</title>
 <meta name="description" content="A modern, inclusive identity for a museum reimagining how visitors experience sound.">
 <meta name="theme-color" content="#0a0a0a">
+<script>(function(){var r=document.documentElement,t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='system';if(t==='system')t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}r.setAttribute('data-theme',t)})();</script>
+
 <meta property="og:title" content="Museum of Sound — Yuliia Shtefan">
 <meta property="og:description" content="A modern, inclusive identity for a museum reimagining how visitors experience sound.">
 <meta property="og:type" content="website">
@@ -21,18 +23,24 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a href="../index.html" class="brand" data-magnetic>y</a>
-    <nav class="main-nav" id="main-nav" aria-label="Main">
-      <ul>
-        <li><a href="../index.html#about" data-roll data-magnetic="0.25">About</a></li>
-        <li><a href="../index.html#works" data-roll data-magnetic="0.25">Work</a></li>
-        <li><a href="../index.html#services" data-roll data-magnetic="0.25">Expertise</a></li>
-        <li><a href="../index.html#contact" data-roll data-magnetic="0.25">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
-      <span></span><span></span>
-    </button>
+    <a href="../index.html" class="brand" data-magnetic="0.2"><span>Yuliia Shtefan</span></a>
+    <div class="header-tools">
+      <nav class="main-nav" id="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#about" data-roll data-magnetic="0.25">About</a></li>
+          <li><a href="../index.html#works" data-roll data-magnetic="0.25">Work</a></li>
+          <li><a href="../index.html#services" data-roll data-magnetic="0.25">Expertise</a></li>
+          <li><a href="../index.html#contact" data-roll data-magnetic="0.25">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Light / dark mode">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -57,9 +65,10 @@
 
   <section class="project-body">
     <div class="wrap">
-      <p class="reveal">The Museum of Sound&#39;s branding centers on accessibility and immersion — a move away from the traditional, static museum experience toward something dynamic and interactive. The identity foregrounds sound&#39;s multifaceted nature: its historical significance, but also its emotional, cultural, and technological impact.</p>
-
-      <p class="reveal">The system, including logo and full visual identity, was built to feel modern and engaging while welcoming visitors of every age and background into the world of sound.</p>
+      <div class="text-cols">
+        <p class="reveal">The Museum of Sound&#39;s branding centers on accessibility and immersion — a move away from the traditional, static museum experience toward something dynamic and interactive. The identity foregrounds sound&#39;s multifaceted nature: its historical significance, but also its emotional, cultural, and technological impact.</p>
+        <p class="reveal">The system, including logo and full visual identity, was built to feel modern and engaging while welcoming visitors of every age and background into the world of sound.</p>
+      </div>
 
       <div class="project-gallery reveal">
         <img src="../images/placeholders/gallery.svg" alt="Museum of Sound brand presentation" loading="lazy" decoding="async">

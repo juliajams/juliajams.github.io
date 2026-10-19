@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-default="system">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Evergreen — Yuliia Shtefan</title>
 <meta name="description" content="A nature-integrated hotel and resort brand, built around sustainability and a deep connection to its coastal setting.">
 <meta name="theme-color" content="#0a0a0a">
+<script>(function(){var r=document.documentElement,t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='system';if(t==='system')t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}r.setAttribute('data-theme',t)})();</script>
+
 <meta property="og:title" content="Evergreen — Yuliia Shtefan">
 <meta property="og:description" content="A nature-integrated hotel and resort brand, built around sustainability and a deep connection to its coastal setting.">
 <meta property="og:type" content="website">
@@ -21,18 +23,24 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a href="../index.html" class="brand" data-magnetic>y</a>
-    <nav class="main-nav" id="main-nav" aria-label="Main">
-      <ul>
-        <li><a href="../index.html#about" data-roll data-magnetic="0.25">About</a></li>
-        <li><a href="../index.html#works" data-roll data-magnetic="0.25">Work</a></li>
-        <li><a href="../index.html#services" data-roll data-magnetic="0.25">Expertise</a></li>
-        <li><a href="../index.html#contact" data-roll data-magnetic="0.25">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
-      <span></span><span></span>
-    </button>
+    <a href="../index.html" class="brand" data-magnetic="0.2"><span>Yuliia Shtefan</span></a>
+    <div class="header-tools">
+      <nav class="main-nav" id="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="../index.html#about" data-roll data-magnetic="0.25">About</a></li>
+          <li><a href="../index.html#works" data-roll data-magnetic="0.25">Work</a></li>
+          <li><a href="../index.html#services" data-roll data-magnetic="0.25">Expertise</a></li>
+          <li><a href="../index.html#contact" data-roll data-magnetic="0.25">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Light / dark mode">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -57,32 +65,37 @@
 
   <section class="project-body">
     <div class="wrap">
-      <p class="reveal">Evergreen is a new hotel and resort located in Copalis Beach, Washington. The concept centers on a luxurious yet nature-integrated experience, capitalizing on the area&#39;s coastal beauty rather than competing with it.</p>
-
-      <p class="reveal">The branding plays a central role in that positioning. Instead of reading as another beachfront hotel, Evergreen&#39;s identity emphasizes sustainability and a lasting connection to the surrounding environment.</p>
+      <div class="text-cols">
+        <p class="reveal">Evergreen is a new hotel and resort located in Copalis Beach, Washington. The concept centers on a luxurious yet nature-integrated experience, capitalizing on the area&#39;s coastal beauty rather than competing with it.</p>
+        <p class="reveal">The branding plays a central role in that positioning. Instead of reading as another beachfront hotel, Evergreen&#39;s identity emphasizes sustainability and a lasting connection to the surrounding environment.</p>
+      </div>
 
       <div class="project-gallery reveal">
         <img src="../images/placeholders/gallery.svg" alt="Evergreen brand identity presentation" loading="lazy" decoding="async">
       </div>
 
-      <p class="reveal">Several logotype versions were developed so the brand could communicate clearly across different media: a wordmark, a symbol, and a seal, each suited to different space constraints. The seal doubles as a decorative and supplementary mark.</p>
-
-      <p class="reveal">The color palette leans on natural tints drawn from Evergreen&#39;s own location — clean, contrasting tones that read as an &quot;out in the woods&quot; experience. Typography was deliberately limited to two families to keep every touchpoint cohesive.</p>
+      <div class="text-cols">
+        <p class="reveal">Several logotype versions were developed so the brand could communicate clearly across different media: a wordmark, a symbol, and a seal, each suited to different space constraints. The seal doubles as a decorative and supplementary mark.</p>
+        <p class="reveal">The color palette leans on natural tints drawn from Evergreen&#39;s own location — clean, contrasting tones that read as an &quot;out in the woods&quot; experience. Typography was deliberately limited to two families to keep every touchpoint cohesive.</p>
+      </div>
 
       <div class="project-gallery cols-2 reveal">
         <img src="../images/placeholders/gallery.svg" alt="Evergreen logo system" loading="lazy" decoding="async">
         <img src="../images/placeholders/gallery.svg" alt="Evergreen color palette and typography" loading="lazy" decoding="async">
       </div>
 
-      <p class="reveal">For the companion mobile app, secondary research included a deep look at existing smart-home practices — surveys and focus-group interviews aimed at surfacing the real pain points guests hit during a stay.</p>
-
-      <p class="reveal">That research showed guests were enthusiastic about controlling multiple room devices and requesting services from one place, but wary of complexity — they wanted fast, obvious access to controls. Following the resulting user journey map, the key actions were brought forward onto the home screen, with tabs held in reserve for secondary features.</p>
+      <div class="text-cols">
+        <p class="reveal">For the companion mobile app, secondary research included a deep look at existing smart-home practices — surveys and focus-group interviews aimed at surfacing the real pain points guests hit during a stay.</p>
+        <p class="reveal">That research showed guests were enthusiastic about controlling multiple room devices and requesting services from one place, but wary of complexity — they wanted fast, obvious access to controls. Following the resulting user journey map, the key actions were brought forward onto the home screen, with tabs held in reserve for secondary features.</p>
+      </div>
 
       <div class="project-gallery reveal">
         <img src="../images/placeholders/gallery.svg" alt="Evergreen mobile app home screen" loading="lazy" decoding="async">
       </div>
 
-      <p class="reveal">The interface stays simple to navigate, with contrast between UI elements built to WCAG standards for an inclusive experience with less eye fatigue. Gestalt principles guided the UX work throughout — grouping by region, layout grids for continuity, and consistent color for similarity — resulting in a clear, cohesive visual hierarchy.</p>
+      <div class="text-cols">
+        <p class="reveal">The interface stays simple to navigate, with contrast between UI elements built to WCAG standards for an inclusive experience with less eye fatigue. Gestalt principles guided the UX work throughout — grouping by region, layout grids for continuity, and consistent color for similarity — resulting in a clear, cohesive visual hierarchy.</p>
+      </div>
 
       <div class="project-gallery cols-2 reveal">
         <img src="../images/placeholders/gallery.svg" alt="Evergreen app screens" loading="lazy" decoding="async">

@@ -5,7 +5,8 @@
     "logoMark": "y",
     "favicon": "images/favicon.svg",
     "ogImage": "images/placeholders/wide.svg",
-    "siteUrl": ""
+    "siteUrl": "",
+    "defaultTheme": "system"
   },
   "hero": {
     "eyebrow": "BRAND & UX DESIGNER",
@@ -16,7 +17,8 @@
     "ctaLabel": "See Projects",
     "ghost": "Work",
     "imageGrayscale": true,
-    "badge": "Available for new projects"
+    "badge": "Available for new projects",
+    "visual": "scene"
   },
   "marquee": [
     "Brand Identity",

@@ -1,3 +1,5 @@
+// build.mjs — compiles content/site.json into docs/, the finished website.
+//   docs/  = the public site
 // Usage:  node build.mjs        (no dependencies; Node 18+)
 
 import { readFile, writeFile, mkdir, rm, cp } from 'node:fs/promises';

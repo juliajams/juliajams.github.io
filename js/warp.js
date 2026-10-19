@@ -286,6 +286,20 @@
     });
     window.addEventListener('scroll', wake, { passive: true });
 
+    // The text colour changes with the theme. Colours inherit through elements that are still fading,
+    // so wait for the page's colour transition to finish, then redraw every headline in the new colour.
+    var themeTimer;
+    document.addEventListener('themechange', function () {
+      canvas.style.transition = 'opacity .18s linear';
+      canvas.style.opacity = '0';
+      clearTimeout(themeTimer);
+      themeTimer = setTimeout(function () {
+        items.forEach(function (it) { if (it.built) build(it); });
+        frame(performance.now());
+        canvas.style.opacity = '1';
+      }, 720);
+    });
+
     var resizeTimer;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);

@@ -70,6 +70,13 @@ function img(o, root, { src, alt, path, cls, eager }) {
 const arrowIcon =
   '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+// Runs in <head> before first paint so there is no flash of the wrong colours.
+// A saved visitor choice wins; otherwise the site's default (dark, light, or follow the device).
+function themeInit(def) {
+  const d = ['dark', 'light', 'system'].includes(def) ? def : 'system';
+  return `(function(){var r=document.documentElement,t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='${d}';if(t==='system')t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}r.setAttribute('data-theme',t)})();`;
+}
+
 /* ------------------------------ Shared pieces ----------------------------- */
 
 function head(c, o, { root, title, description, pathname, ogImage }) {
@@ -82,7 +89,8 @@ function head(c, o, { root, title, description, pathname, ogImage }) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ${o.base ? `<base href="${esc(o.base)}">\n` : ''}<title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="${o.theme === 'light' ? '#f4f1ea' : '#0a0a0a'}">
+${o.theme ? '' : `<script>${themeInit(c.meta.defaultTheme)}</script>\n`}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
@@ -98,18 +106,24 @@ function header(c, o, root, home) {
   const idx = home ? '' : `${root}index.html`;
   return `<header class="site-header">
   <div class="wrap">
-    <a href="${home ? '#top' : idx || 'index.html'}" class="brand" data-magnetic>${esc(c.meta.logoMark || 'y')}</a>
-    <nav class="main-nav" id="main-nav" aria-label="Main">
-      <ul>
-        <li><a href="${idx}#about" data-roll data-magnetic="0.25">About</a></li>
-        <li><a href="${idx}#works" data-roll data-magnetic="0.25">Work</a></li>
-        <li><a href="${idx}#services" data-roll data-magnetic="0.25">Expertise</a></li>
-        <li><a href="${idx}#contact" data-roll data-magnetic="0.25">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
-      <span></span><span></span>
-    </button>
+    <a href="${home ? '#top' : idx || 'index.html'}" class="brand" data-magnetic="0.2"><span${ed(o, 'hero.name')}>${esc(c.hero.name)}</span></a>
+    <div class="header-tools">
+      <nav class="main-nav" id="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="${idx}#about" data-roll data-magnetic="0.25">About</a></li>
+          <li><a href="${idx}#works" data-roll data-magnetic="0.25">Work</a></li>
+          <li><a href="${idx}#services" data-roll data-magnetic="0.25">Expertise</a></li>
+          <li><a href="${idx}#contact" data-roll data-magnetic="0.25">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Light / dark mode">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>`;
 }
@@ -134,9 +148,15 @@ function footer(c, o, root, home) {
 </footer>`;
 }
 
-function pageShell(c, o, { root, home, title, description, pathname, ogImage, body }) {
+function pageShell(c, o, { root, home, title, description, pathname, ogImage, body, scripts = [] }) {
+  const htmlAttrs = [
+    'lang="en"',
+    o.preview ? 'data-editor' : '',
+    o.theme ? `data-theme="${o.theme}" data-forced-theme` : `data-theme-default="${esc(c.meta.defaultTheme || 'system')}"`
+  ].filter(Boolean).join(' ');
+  const live = !o.preview;       // visitors (and the editor's Effects mode) get the animation scripts
   return `<!DOCTYPE html>
-<html lang="en"${o.preview ? ' data-editor' : ''}>
+<html ${htmlAttrs}>
 ${head(c, o, { root, title, description, pathname, ogImage })}
 <body id="top">
 
@@ -148,7 +168,7 @@ ${body}
 
 ${footer(c, o, root, home)}
 
-<script src="${root}js/main.js" defer></script>${o.preview ? `\n<script>${PREVIEW_SCRIPT}</script>` : `\n<script src="${root}js/warp.js" defer></script>`}${o.fx ? `\n<script>${FX_SCRIPT}</script>` : ''}
+<script src="${root}js/main.js" defer></script>${live ? `\n<script src="${root}js/warp.js" defer></script>${scripts.map((sc) => `\n<script src="${root}${sc}" defer></script>`).join('')}` : `\n<script>${PREVIEW_SCRIPT}</script>`}${o.fx ? `\n<script>${FX_SCRIPT}</script>` : ''}
 </body>
 </html>
 `;
@@ -158,9 +178,6 @@ ${footer(c, o, root, home)}
 
 // A project name for a single line (list rows, next-project links).
 const oneLine = (s) => flat(s);
-
-// Two-line headline: every word on its own line, with real spaces kept in the markup.
-const stack = (s) => String(s ?? '').trim().split(/\s+/).map((w) => `<span class="ln">${esc(w)}</span>`).join(' ');
 
 function workRow(c, o, p, i) {
   const P = `projects.${i}`;
@@ -192,6 +209,23 @@ function badgeSvg(text) {
         </svg>
         <span class="badge-arrow">${'<svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'}</span>
       </a>`;
+}
+
+// The big visual beside the intro: an interactive 3D scene, or an interactive photo.
+function heroVisual(c, o, root) {
+  const h = c.hero;
+  const kind = h.visual === 'photo' && h.image ? 'photo' : 'scene';
+  const inner = kind === 'photo'
+    ? img(o, root, { src: h.image, alt: h.imageAlt, path: 'hero.image', eager: true })
+    : '<div class="hero-orb" aria-hidden="true"></div>';
+  const attrs = kind === 'photo'
+    ? `${h.imageGrayscale === false ? '' : ' data-gray'}`
+    : ' role="img" aria-label="Interactive 3D sculpture"';
+  return `<div class="hero-visual" data-visual="${kind}"${attrs}>
+        <span class="tab" aria-hidden="true"></span>
+        ${inner}
+        ${badgeSvg(h.badge)}
+      </div>`;
 }
 
 export function renderHome(c, o = {}) {
@@ -232,21 +266,16 @@ ${it.list.map((li, j) => `            <li${ed(o, `expertise.items.${i}.list.${j}
   const ldJson = JSON.stringify(ld).replace(/</g, '\\u003c');
 
   const body = `  <section id="hero" class="hero">
+    <h1 class="sr-only">${esc(h.name)} — ${esc(flat(h.eyebrow))}</h1>
     <div class="wrap hero-wrap">
-      <p class="hero-role"${ed(o, 'hero.eyebrow')}>${esc(h.eyebrow)}</p>
-      <h1 class="hero-name warp" data-warp${ed(o, 'hero.name')}>${stack(h.name)}</h1>
-
-      <div class="hero-foot">
-        <p class="hero-text"${ed(o, 'hero.text')}>${esc(h.text)}</p>
-        <a href="#works" class="link-cta" data-magnetic="0.25"><span${ed(o, 'hero.ctaLabel')}>${esc(h.ctaLabel)}</span> <span class="arrow">&rarr;</span></a>
+      <div class="hero-side">
+        <p class="hero-role"${ed(o, 'hero.eyebrow')}>${esc(h.eyebrow)}</p>
+        <div class="hero-main">
+          <p class="hero-text warp" data-warp${ed(o, 'hero.text')}>${esc(h.text)}</p>
+          <a href="#works" class="link-cta" data-magnetic="0.25"><span${ed(o, 'hero.ctaLabel')}>${esc(h.ctaLabel)}</span> <span class="arrow">&rarr;</span></a>
+        </div>
       </div>
-
-      <figure class="hero-img${h.imageGrayscale === false ? ' is-color' : ''}">
-        <span class="tab" aria-hidden="true"></span>
-        ${img(o, root, { src: h.image, alt: h.imageAlt, path: 'hero.image', eager: true })}
-      </figure>
-
-      ${badgeSvg(h.badge)}
+      ${heroVisual(c, o, root)}
     </div>
   </section>
 
@@ -316,7 +345,8 @@ ${social}
   return pageShell(c, o, {
     root, home: true,
     title: c.meta.title, description: c.meta.description,
-    pathname: '', ogImage: c.meta.ogImage, body
+    pathname: '', ogImage: c.meta.ogImage, body,
+    scripts: ['js/hero.js']
   });
 }
 
@@ -329,20 +359,28 @@ export function renderProject(c, slug, o = {}) {
   const root = o.preview ? '' : '../';
   const P = `projects.${i}`;
 
-  const blocks = p.blocks
-    .map((b, j) => {
-      const B = `${P}.blocks.${j}`;
-      if (b.type === 'text') {
-        return `      <p class="reveal"${ed(o, `${B}.text`)}>${esc(b.text)}</p>`;
-      }
-      const n = b.images.length;
-      const cls = n === 2 || n >= 4 ? ' cols-2' : n === 3 ? ' cols-3' : '';
-      const imgs = b.images
-        .map((im, k) => '        ' + img(o, root, { src: im.src, alt: im.alt, path: `${B}.images.${k}.src` }))
-        .join('\n');
-      return `      <div class="project-gallery${cls} reveal">\n${imgs}\n      </div>`;
-    })
-    .join('\n\n');
+  // Consecutive paragraphs sit together in two columns that line up with the rest of the page grid.
+  const parts = [];
+  let run = [];
+  const flush = () => {
+    if (run.length) { parts.push(`      <div class="text-cols">\n${run.join('\n')}\n      </div>`); run = []; }
+  };
+  p.blocks.forEach((b, j) => {
+    const B = `${P}.blocks.${j}`;
+    if (b.type === 'text') {
+      run.push(`        <p class="reveal"${ed(o, `${B}.text`)}>${esc(b.text)}</p>`);
+      return;
+    }
+    flush();
+    const n = b.images.length;
+    const cls = n === 2 || n >= 4 ? ' cols-2' : n === 3 ? ' cols-3' : '';
+    const imgs = b.images
+      .map((im, k) => '        ' + img(o, root, { src: im.src, alt: im.alt, path: `${B}.images.${k}.src` }))
+      .join('\n');
+    parts.push(`      <div class="project-gallery${cls} reveal">\n${imgs}\n      </div>`);
+  });
+  flush();
+  const blocks = parts.join('\n\n');
 
   const many = c.projects.length > 1;
   const next = c.projects[(i + 1) % c.projects.length];
@@ -432,6 +470,7 @@ const PREVIEW_CSS = `
 [data-edit-img]:hover{outline-color:#f04e23}
 .img-empty{display:flex;align-items:center;justify-content:center;width:100%;min-height:220px;background:rgba(240,78,35,.06);border:1px dashed #f04e23;color:#f04e23;font:600 15px Inter,sans-serif;cursor:pointer}
 .wk-thumb.img-empty{min-height:120px}
+.hero-visual .img-empty{position:absolute;inset:0;min-height:0}
 html[data-editor] .wk-thumb{display:block!important}
 `;
 

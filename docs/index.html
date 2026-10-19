@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme-default="system">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yuliia Shtefan | Brand and Web Design</title>
 <meta name="description" content="Professional designer with 7+ years of experience in graphic, web, and UI/UX design.">
 <meta name="theme-color" content="#0a0a0a">
+<script>(function(){var r=document.documentElement,t;try{t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark'){t='system';if(t==='system')t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'}r.setAttribute('data-theme',t)})();</script>
+
 <meta property="og:title" content="Yuliia Shtefan | Brand and Web Design">
 <meta property="og:description" content="Professional designer with 7+ years of experience in graphic, web, and UI/UX design.">
 <meta property="og:type" content="website">
@@ -21,44 +23,49 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a href="#top" class="brand" data-magnetic>y</a>
-    <nav class="main-nav" id="main-nav" aria-label="Main">
-      <ul>
-        <li><a href="#about" data-roll data-magnetic="0.25">About</a></li>
-        <li><a href="#works" data-roll data-magnetic="0.25">Work</a></li>
-        <li><a href="#services" data-roll data-magnetic="0.25">Expertise</a></li>
-        <li><a href="#contact" data-roll data-magnetic="0.25">Contact</a></li>
-      </ul>
-    </nav>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
-      <span></span><span></span>
-    </button>
+    <a href="#top" class="brand" data-magnetic="0.2"><span>Yuliia Shtefan</span></a>
+    <div class="header-tools">
+      <nav class="main-nav" id="main-nav" aria-label="Main">
+        <ul>
+          <li><a href="#about" data-roll data-magnetic="0.25">About</a></li>
+          <li><a href="#works" data-roll data-magnetic="0.25">Work</a></li>
+          <li><a href="#services" data-roll data-magnetic="0.25">Expertise</a></li>
+          <li><a href="#contact" data-roll data-magnetic="0.25">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" title="Light / dark mode">
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
 <main>
   <section id="hero" class="hero">
+    <h1 class="sr-only">Yuliia Shtefan — BRAND &amp; UX DESIGNER</h1>
     <div class="wrap hero-wrap">
-      <p class="hero-role">BRAND &amp; UX DESIGNER</p>
-      <h1 class="hero-name warp" data-warp><span class="ln">Yuliia</span> <span class="ln">Shtefan</span></h1>
-
-      <div class="hero-foot">
-        <p class="hero-text">8 years of creating designs that are both functional and aesthetical, while effectively solving business problems. That&#39;s it.</p>
-        <a href="#works" class="link-cta" data-magnetic="0.25"><span>See Projects</span> <span class="arrow">&rarr;</span></a>
+      <div class="hero-side">
+        <p class="hero-role">BRAND &amp; UX DESIGNER</p>
+        <div class="hero-main">
+          <p class="hero-text warp" data-warp>8 years of creating designs that are both functional and aesthetical, while effectively solving business problems. That&#39;s it.</p>
+          <a href="#works" class="link-cta" data-magnetic="0.25"><span>See Projects</span> <span class="arrow">&rarr;</span></a>
+        </div>
       </div>
-
-      <figure class="hero-img">
+      <div class="hero-visual" data-visual="scene" role="img" aria-label="Interactive 3D sculpture">
         <span class="tab" aria-hidden="true"></span>
-        <img src="images/placeholders/portrait.svg" alt="Photo from Yuliia&#39;s design work">
-      </figure>
-
-      <a class="badge" href="#works" aria-label="See projects" data-kinetic data-magnetic="0.2">
+        <div class="hero-orb" aria-hidden="true"></div>
+        <a class="badge" href="#works" aria-label="See projects" data-kinetic data-magnetic="0.2">
         <svg viewBox="0 0 220 220" aria-hidden="true">
           <defs><path id="badge-circle" d="M110,110 m-92,0 a92,92 0 1,1 184,0 a92,92 0 1,1 -184,0"/></defs>
           <g class="badge-rot"><text><textPath href="#badge-circle" textLength="578" lengthAdjust="spacing">AVAILABLE FOR NEW PROJECTS  •  AVAILABLE FOR NEW PROJECTS  •  </textPath></text></g>
         </svg>
         <span class="badge-arrow"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </a>
+      </div>
     </div>
   </section>
 
@@ -228,5 +235,6 @@
 
 <script src="js/main.js" defer></script>
 <script src="js/warp.js" defer></script>
+<script src="js/hero.js" defer></script>
 </body>
 </html>
