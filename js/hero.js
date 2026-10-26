@@ -86,7 +86,7 @@
   function isDark() { return root.getAttribute('data-theme') !== 'light'; }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
-  /* ----------------------------------- 3D scene ------------------------------- */
+  /* ----------------------------------- 3D scene ------------------------------- 
 
   var SCENE = [
     'uniform vec2 uRes; uniform float uTime; uniform vec2 uRot; uniform float uDark;',
@@ -250,7 +250,105 @@
     document.addEventListener('themechange', wake);
   }
 
-  /* ---------------------------------- interactive photo ----------------------- */
+   ---------------------------------- interactive photo ----------------------- */
+
+    /* ------------------------ gradient blob ------------------------ */
+
+  var SCENE = [
+    'uniform vec2 uRes; uniform vec2 uA; uniform vec2 uB; uniform vec2 uC;',
+    'uniform float uR; uniform float uWob; uniform float uTime; uniform float uDark;',
+    'varying vec2 vUv;',
+    'float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }',
+    'void main(){',
+    '  float asp = uRes.x / uRes.y;',
+    '  vec2 p = vec2(vUv.x * asp, vUv.y);',
+    // liquid edge: the shape wobbles more the faster the cursor moves
+    '  p += uWob * 0.045 * vec2(sin(p.y * 7.0 + uTime * 1.9), sin(p.x * 7.0 - uTime * 1.6));',
+    // three soft lobes that trail the cursor at different speeds and melt together
+    '  vec2 a = p - uA, b = p - uB, c = p - uC;',
+    '  float fa = (uR * uR) / (dot(a, a) + 0.0008);',
+    '  float fb = (uR * uR * 0.80) / (dot(b, b) + 0.0008);',
+    '  float fc = (uR * uR * 0.65) / (dot(c, c) + 0.0008);',
+    '  float f = fa + fb + fc;',
+    '  vec3 cA = vec3(1.00, 0.32, 0.15);',                                          // the site red
+    '  vec3 cB = vec3(1.00, 0.62, 0.38);',                                          // apricot
+    '  vec3 cC = mix(vec3(1.00, 0.45, 0.58), vec3(0.98, 0.83, 0.72), uDark);',      // rose (light) / cream (dark)
+    '  vec3 col = (cA * fa + cB * fb + cC * fc) / max(f, 0.0001);',
+    '  col += vec3(0.20, 0.10, 0.05) * smoothstep(1.2, 4.0, f);',                   // brighter heart
+    '  float alpha = smoothstep(0.35, 2.2, f);',                                    // wide ramp = blurred edge
+    '  float n = (hash(gl_FragCoord.xy) - 0.5) / 255.0;',                           // dither, avoids banding
+    '  alpha = clamp(alpha + n * 2.0, 0.0, 1.0);',
+    '  gl_FragColor = vec4(clamp(col + n, 0.0, 1.0) * alpha, alpha);',
+    '}'
+  ].join('\n');
+
+  function scene() {
+    var g = setup(SCENE, ['uRes', 'uA', 'uB', 'uC', 'uR', 'uWob', 'uTime', 'uDark']);
+    if (!g) return;
+    var gl = g.gl, canvas = g.canvas, U = g.U;
+
+    // Positions are measured in "hero heights": y runs 0..1, x runs 0..aspect.
+    var aspect = 1.2;
+    function resize() {
+      var w = host.clientWidth, h = host.clientHeight;
+      if (!w || !h) return;
+      aspect = w / h;
+      canvas.width = Math.max(2, Math.round(w * 0.5));   // it is blurry anyway, so half resolution is plenty
+      canvas.height = Math.max(2, Math.round(h * 0.5));
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(U.uRes, canvas.width, canvas.height);
+    }
+    resize();
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host); else window.addEventListener('resize', resize);
+
+    var px = aspect / 2, py = 0.5, lpx = px, lpy = py, inside = false;
+    var A = { x: px, y: py }, B = { x: px, y: py }, C = { x: px, y: py };
+    var speed = 0;                                       // smoothed cursor speed, in hero-heights per frame
+
+    function follow(L, tx, ty, k, dt) { var s = Math.min(1, k * dt); L.x += (tx - L.x) * s; L.y += (ty - L.y) * s; }
+
+    function draw(time, dt) {
+      // heading: the cursor while it is over the hero, otherwise a slow drift around the middle
+      var gx = inside ? px : aspect * 0.5 + Math.sin(time * 0.45) * aspect * 0.12;
+      var gy = inside ? py : 0.5 + Math.cos(time * 0.37) * 0.10;
+
+      // speed rises quickly when the cursor moves and fades slowly when it stops
+      var inst = inside ? Math.hypot(px - lpx, py - lpy) / dt : 0;
+      lpx = px; lpy = py;
+      speed += (inst - speed) * (inst > speed ? Math.min(1, 0.35 * dt) : Math.min(1, 0.035 * dt));
+
+      follow(A, gx, gy, 0.14, dt);
+      follow(B, gx + Math.cos(time * 0.8) * 0.04, gy + Math.sin(time * 0.8) * 0.04, 0.075, dt);
+      follow(C, gx + Math.cos(time * 0.6 + 2.1) * 0.05, gy + Math.sin(time * 0.6 + 2.1) * 0.05, 0.045, dt);
+
+      var r = 0.105 + Math.min(speed * 4.2, 0.20) + 0.008 * Math.sin(time * 1.7);   // bigger when moving, smaller at rest
+      var wob = 0.25 + Math.min(speed * 14, 1.2);
+
+      gl.clearColor(0, 0, 0, 0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      gl.uniform2f(U.uA, A.x, A.y); gl.uniform2f(U.uB, B.x, B.y); gl.uniform2f(U.uC, C.x, C.y);
+      gl.uniform1f(U.uR, r); gl.uniform1f(U.uWob, wob);
+      gl.uniform1f(U.uTime, time); gl.uniform1f(U.uDark, isDark() ? 1 : 0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      return true;
+    }
+
+    host.classList.add('is-live');
+    if (reduce) {                                        // reduced motion: one still frame
+      draw(2, 1);
+      document.addEventListener('themechange', function () { draw(2, 1); });
+      return;
+    }
+    var wake = loop(draw);
+    host.addEventListener('pointermove', function (e) {
+      var r = host.getBoundingClientRect();
+      px = (e.clientX - r.left) / r.height;
+      py = (e.clientY - r.top) / r.height;
+      inside = true;
+      wake();
+    }, { passive: true });
+    host.addEventListener('pointerleave', function () { inside = false; });
+  }
 
   var PHOTO = [
     'uniform sampler2D uTex; uniform vec2 uRes; uniform vec2 uImg; uniform vec2 uMouse; uniform vec2 uVel;',

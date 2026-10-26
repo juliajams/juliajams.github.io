@@ -9,15 +9,15 @@
     "defaultTheme": "system"
   },
   "hero": {
-    "eyebrow": "BRAND & UX DESIGNER",
+    "eyebrow": "BRAND & VISUAL DESIGNER",
     "name": "Yuliia Shtefan",
-    "image": "images/placeholders/portrait.svg",
+    //"image": "images/placeholders/portrait.svg",
     "imageAlt": "Photo from Yuliia's design work",
     "text": "8 years of creating designs that are both functional and aesthetical, while effectively solving business problems. That's it.",
     "ctaLabel": "See Projects",
     "ghost": "Work",
     "imageGrayscale": true,
-    "badge": "Available for new projects",
+    "badge": "Have a project in mind?",
     "visual": "scene"
   },
   "marquee": [
@@ -41,8 +41,8 @@
       "category": "BRAND IDENTITY & DESIGN",
       "year": "2025",
       "yearRange": "2024–2025",
-      "background": "images/placeholders/wide.svg",
-      "cover": "images/placeholders/cover.svg",
+      "background": "images/uploads/Evergreen_cover.png",
+      "cover": "images/uploads/Evergreen_cover.png",
       "coverAlt": "Evergreen brand identity",
       "frameTitle": "EVERGREEN",
       "sunburst": true,
@@ -124,17 +124,17 @@
       ]
     },
     {
-      "slug": "hexcapes",
-      "name": "Hexcapes",
+      "slug": "hexpel",
+      "name": "Hexpel",
       "category": "BRAND STRATEGY & IDENTITY",
       "year": "2024",
       "yearRange": "2023–2024",
-      "background": "images/placeholders/wide.svg",
-      "cover": "images/placeholders/cover.svg",
+      "background": "images/uploads/Hexpel_Cover.png",
+      "cover": "images/uploads/Hexpel_Cover.png",
       "coverAlt": "Hexcapes brand identity",
       "frameTitle": "HEXCAPES",
       "sunburst": false,
-      "services": "Branding, UI/UX Design",
+      "services": "Logo, Brand Positioning & Identity",
       "brief": "A modern, recognizable identity for a cybersecurity company built around AI-driven threat prediction for government clients.",
       "blocks": [
         {
@@ -143,7 +143,7 @@
         },
         {
           "type": "text",
-          "text": "The re-brand set out to craft a recognizable, modern logotype backed by a full identity system — imagery, brand voice, typography, and iconography, plus social templates — all built to meet WCAG accessibility standards."
+          "text": "The branding set out to craft a recognizable, modern logotype backed by a full identity system — imagery, brand voice, typography, and iconography, plus social templates — all built to meet WCAG accessibility standards."
         },
         {
           "type": "images",
@@ -200,7 +200,7 @@
         }
       ]
     },
-    {
+    /*{
       "slug": "mos",
       "name": "Museum of\nSound",
       "category": "BRAND IDENTITY",
@@ -276,7 +276,7 @@
           ]
         }
       ]
-    }
+    }*/
   ],
   "expertise": {
     "eyebrow": "What I Do",
