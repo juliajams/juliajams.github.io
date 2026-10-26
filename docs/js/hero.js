@@ -350,34 +350,34 @@
     host.addEventListener('pointerleave', function () { inside = false; });
   }
 
-  var PHOTO = [
-    'uniform sampler2D uTex; uniform vec2 uRes; uniform vec2 uImg; uniform vec2 uMouse; uniform vec2 uVel;',
-    'uniform float uHover; uniform float uTime; uniform float uGray;',
-    'varying vec2 vUv;',
-    'void main(){',
-    '  vec2 asp = vec2(uRes.x / uRes.y, 1.0);',
-    '  vec2 uv = vUv;',
-    '  vec2 d = (uv - uMouse) * asp;',
-    '  float dist = length(d);',
-    '  vec2 dir = d / max(dist, 0.0001);',
-    '  float fall = exp(-dist * dist * 6.0) * uHover;',
-    '  vec2 off = -d * fall * 0.30;',                                       // lens
-    '  off -= uVel * fall * 0.5;',                                          // liquid drag
-    '  off += dir * sin(dist * 28.0 - uTime * 3.0) * fall * 0.004 * smoothstep(0.0, 0.1, dist);',
-    '  off += (uMouse - 0.5) * -0.03 * uHover;',                            // slight parallax
-    '  vec2 suv = uv + off / asp;',
-    // "cover" fit with a little zoom so the edges never show
-    '  float ca = uRes.x / uRes.y, ia = uImg.x / uImg.y;',
-    '  vec2 sc = ca > ia ? vec2(1.0, ia / ca) : vec2(ca / ia, 1.0);',
-    '  vec2 tuv = (suv - 0.5) * sc * 0.95 + 0.5;',
-    '  vec2 co = off / asp * 0.05;',
-    '  vec3 col = vec3(texture2D(uTex, tuv + co).r, texture2D(uTex, tuv).g, texture2D(uTex, tuv - co).b);',
-    '  float g = dot(col, vec3(0.299, 0.587, 0.114));',
-    '  float amt = clamp((1.0 - uGray) + smoothstep(0.55, 0.0, dist) * uHover, 0.0, 1.0);',   // colour blooms under the cursor
-    '  col = mix(vec3(g), col, amt);',
-    '  gl_FragColor = vec4(col, 1.0);',
-    '}'
-  ].join('\n');
+  // var PHOTO = [
+  //   'uniform sampler2D uTex; uniform vec2 uRes; uniform vec2 uImg; uniform vec2 uMouse; uniform vec2 uVel;',
+  //   'uniform float uHover; uniform float uTime; uniform float uGray;',
+  //   'varying vec2 vUv;',
+  //   'void main(){',
+  //   '  vec2 asp = vec2(uRes.x / uRes.y, 1.0);',
+  //   '  vec2 uv = vUv;',
+  //   '  vec2 d = (uv - uMouse) * asp;',
+  //   '  float dist = length(d);',
+  //   '  vec2 dir = d / max(dist, 0.0001);',
+  //   '  float fall = exp(-dist * dist * 6.0) * uHover;',
+  //   '  vec2 off = -d * fall * 0.30;',                                       // lens
+  //   '  off -= uVel * fall * 0.5;',                                          // liquid drag
+  //   '  off += dir * sin(dist * 28.0 - uTime * 3.0) * fall * 0.004 * smoothstep(0.0, 0.1, dist);',
+  //   '  off += (uMouse - 0.5) * -0.03 * uHover;',                            // slight parallax
+  //   '  vec2 suv = uv + off / asp;',
+  //   // "cover" fit with a little zoom so the edges never show
+  //   '  float ca = uRes.x / uRes.y, ia = uImg.x / uImg.y;',
+  //   '  vec2 sc = ca > ia ? vec2(1.0, ia / ca) : vec2(ca / ia, 1.0);',
+  //   '  vec2 tuv = (suv - 0.5) * sc * 0.95 + 0.5;',
+  //   '  vec2 co = off / asp * 0.05;',
+  //   '  vec3 col = vec3(texture2D(uTex, tuv + co).r, texture2D(uTex, tuv).g, texture2D(uTex, tuv - co).b);',
+  //   '  float g = dot(col, vec3(0.299, 0.587, 0.114));',
+  //   '  float amt = clamp((1.0 - uGray) + smoothstep(0.55, 0.0, dist) * uHover, 0.0, 1.0);',   // colour blooms under the cursor
+  //   '  col = mix(vec3(g), col, amt);',
+  //   '  gl_FragColor = vec4(col, 1.0);',
+  //   '}'
+  // ].join('\n');
 
   function photo() {
     var img = host.querySelector('img');
