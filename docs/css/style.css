@@ -280,3 +280,8 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
   .footer-row nav { display: none; }
   .proj-hero { padding-top: 110px; }
 }
+.hero-visual[data-visual="scene"]::after { content: "Move your cursor"; }
+.hero-visual[data-visual="scene"] .hero-canvas { cursor: default; }
+.hero-orb::before { width: min(40%, 40vh); aspect-ratio: 1; border: 0; opacity: .9; filter: blur(22px);
+  background: radial-gradient(circle at 38% 34%, #ffb98a 0%, var(--accent) 52%, transparent 72%); transform: translate(-50%, -50%); }
+.hero-orb::after { display: none; }
