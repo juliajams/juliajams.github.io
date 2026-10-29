@@ -211,7 +211,7 @@ function badgeSvg(text) {
       </a>`;
 }
 
-// The big visual beside the intro: an interactive 3D scene, or an interactive photo.
+// The interactive layer behind the hero text: a gradient blob that follows the cursor (or an interactive photo).
 function heroVisual(c, o, root) {
   const h = c.hero;
   const kind = h.visual === 'photo' && h.image ? 'photo' : 'scene';
@@ -220,9 +220,8 @@ function heroVisual(c, o, root) {
     : '<div class="hero-orb" aria-hidden="true"></div>';
   const attrs = kind === 'photo'
     ? `${h.imageGrayscale === false ? '' : ' data-gray'}`
-    : ' role="img" aria-label="Interactive 3D sculpture"';
+    : ' role="img" aria-label="Interactive gradient blob"';
   return `<div class="hero-visual" data-visual="${kind}"${attrs}>
-        <span class="tab" aria-hidden="true"></span>
         ${inner}
         ${badgeSvg(h.badge)}
       </div>`;
@@ -267,6 +266,7 @@ ${it.list.map((li, j) => `            <li${ed(o, `expertise.items.${i}.list.${j}
 
   const body = `  <section id="hero" class="hero">
     <h1 class="sr-only">${esc(h.name)} — ${esc(flat(h.eyebrow))}</h1>
+    ${heroVisual(c, o, root)}
     <div class="wrap hero-wrap">
       <div class="hero-side">
         <p class="hero-role"${ed(o, 'hero.eyebrow')}>${esc(h.eyebrow)}</p>
@@ -275,7 +275,6 @@ ${it.list.map((li, j) => `            <li${ed(o, `expertise.items.${i}.list.${j}
           <a href="#works" class="link-cta" data-magnetic="0.25"><span${ed(o, 'hero.ctaLabel')}>${esc(h.ctaLabel)}</span> <span class="arrow">&rarr;</span></a>
         </div>
       </div>
-      ${heroVisual(c, o, root)}
     </div>
   </section>
 

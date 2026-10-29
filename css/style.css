@@ -111,8 +111,8 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
 /* ---------------------------------- Hero ---------------------------------- */
 
 .hero { position: relative; min-height: 100vh; min-height: 100svh; display: flex; align-items: stretch; padding: 112px 0 clamp(28px, 4vw, 60px); }
-.hero-wrap { width: 100%; display: grid; grid-template-columns: minmax(250px, .42fr) 1fr; gap: clamp(28px, 4.5vw, 80px); align-items: stretch; }
-.hero-side { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding-top: 6px; min-width: 0; }
+.hero-wrap { position: relative; z-index: 1; width: 100%; display: flex; }
+.hero-side { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding-top: 6px; width: min(100%, 30em); min-width: 0; }
 .hero-role { font-size: clamp(13px, 1.1vw, 16px); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
 .hero-main { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(22px, 2.4vw, 38px); }
 .hero-text { font-family: var(--serif); font-size: clamp(27px, 2.55vw, 46px); line-height: 1.07; letter-spacing: -.008em; color: var(--fg); }
@@ -120,27 +120,20 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
 .link-cta .arrow { color: var(--accent); transition: transform .3s var(--ease); }
 .link-cta:hover .arrow { transform: translateX(6px); }
 
-/* The big interactive visual: a 3D scene or a photo (hero.js adds the canvas) */
-.hero-visual { position: relative; min-height: clamp(380px, 72vh, 760px); background: var(--bg-2); border: 1px solid var(--line); }
-.hero-visual > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .4s var(--ease); }
-.hero-visual[data-visual="photo"][data-gray] > img { filter: grayscale(1) contrast(1.05); }
-.hero-visual .tab { position: absolute; z-index: 3; left: -14px; top: 22px; width: 14px; height: 36px; background: var(--accent); }
+/* The interactive layer behind the hero text: it spans the whole hero, no panel, no border.
+   hero.js adds the canvas; the blob follows the cursor across the full width. */
+.hero-visual { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.hero-visual[data-visual="scene"] .hero-canvas { cursor: grab; touch-action: pan-y; }
-.hero-visual.is-grabbing .hero-canvas { cursor: grabbing; }
-.hero-visual.is-live > img, .hero-visual.is-live .hero-orb { opacity: 0; pointer-events: none; }
-.hero-orb { pointer-events: none; }
-.hero-visual[data-visual]::after { position: absolute; left: 18px; bottom: 14px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
-.hero-visual[data-visual="scene"]::after { content: "Drag to rotate"; }
-.hero-visual[data-visual="photo"]::after { content: "Move your cursor over the photo"; }
+.hero-visual[data-visual="photo"] > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .4s var(--ease); }
+.hero-visual[data-visual="photo"][data-gray] > img { filter: grayscale(1) contrast(1.05); }
+.hero-visual.is-live > img, .hero-visual.is-live .hero-orb { opacity: 0; }
 
-/* Shown while the 3D scene loads, or if WebGL is unavailable */
+/* Shown while the blob loads, or if WebGL is unavailable: one soft gradient shape */
 .hero-orb { position: absolute; inset: 0; transition: opacity .4s var(--ease); }
-.hero-orb::before, .hero-orb::after { content: ""; position: absolute; left: 50%; top: 50%; border-radius: 50%; border: 2px solid var(--fg); opacity: .5; }
-.hero-orb::before { width: min(62%, 58vh); aspect-ratio: 1; transform: translate(-50%, -50%) rotateX(68deg); }
-.hero-orb::after { width: min(44%, 42vh); aspect-ratio: 1; border-color: var(--accent); transform: translate(-50%, -50%) rotateY(68deg); }
+.hero-orb::before { content: ""; position: absolute; left: 62%; top: 46%; width: min(22vw, 34vh); aspect-ratio: 1; border-radius: 46% 54% 52% 48% / 55% 45% 55% 45%; filter: blur(14px); transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #dc3a85 0%, #f0604f 50%, #ffa930 100%); }
 
-.badge { position: absolute; z-index: 3; right: clamp(14px, 2.4vw, 40px); bottom: clamp(14px, 2.4vw, 40px); width: clamp(104px, 10.5vw, 168px); aspect-ratio: 1; display: grid; place-items: center; color: var(--fg); }
+.badge { position: absolute; z-index: 3; pointer-events: auto; right: clamp(14px, 2.4vw, 40px); bottom: clamp(14px, 2.4vw, 40px); width: clamp(104px, 10.5vw, 168px); aspect-ratio: 1; display: grid; place-items: center; color: var(--fg); }
 .badge > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .badge text { font-family: var(--sans); font-size: 14.5px; letter-spacing: .1em; fill: currentColor; }
 .badge-rot { transform-origin: 110px 110px; transform-box: view-box; }
@@ -267,8 +260,6 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
   .main-nav.is-open a { font-size: 30px; font-family: var(--serif); text-transform: none; letter-spacing: 0; }
 
   .hero { padding-top: 96px; min-height: 0; }
-  .hero-wrap { grid-template-columns: 1fr; gap: 28px; }
-  .hero-visual { order: -1; min-height: 0; aspect-ratio: 1 / 1; }
   .hero-text { font-size: clamp(27px, 7vw, 40px); }
   .badge { display: none; }
   .ex-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -280,8 +271,3 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
   .footer-row nav { display: none; }
   .proj-hero { padding-top: 110px; }
 }
-.hero-visual[data-visual="scene"]::after { content: "Move your cursor"; }
-.hero-visual[data-visual="scene"] .hero-canvas { cursor: default; }
-.hero-orb::before { width: min(40%, 40vh); aspect-ratio: 1; border: 0; opacity: .9; filter: blur(22px);
-  background: radial-gradient(circle at 38% 34%, #ffb98a 0%, var(--accent) 52%, transparent 72%); transform: translate(-50%, -50%); }
-.hero-orb::after { display: none; }

@@ -494,8 +494,8 @@ function homeTab() {
       textField(c.hero, 'text', 'Intro text', { area: true, rows: 4 }),
       textField(c.hero, 'ctaLabel', 'Link text'),
       textField(c.hero, 'badge', 'Circular text', { hint: 'Spins around the arrow button beside the headline. Leave empty to hide it.' }),
-      choiceField(c.hero, 'visual', 'Hero visual', [['scene', '3D scene (no image needed)'], ['photo', 'Interactive photo']],
-        'The big interactive area beside the intro. The 3D scene can be dragged to rotate; the photo bends under the cursor. Use Effects mode to try it.'),
+      choiceField(c.hero, 'visual', 'Hero visual', [['scene', 'Gradient blob (no image needed)'], ['photo', 'Interactive photo (full-width background)']],
+        'The interactive layer behind the hero text. The gradient blob floats across the whole hero and follows the cursor; the photo option fills the hero and bends under the cursor. Use Effects mode to try it.'),
       c.hero.visual === 'photo' ? imageField(c.hero, 'image', 'Photo', 'imageAlt') : h('p', { class: 'hint' }, 'Choose “Interactive photo” above to use a photo here.'),
       c.hero.visual === 'photo' ? checkField(c.hero, 'imageGrayscale', 'Black & white (colour appears around the cursor)', true) : null),
 
