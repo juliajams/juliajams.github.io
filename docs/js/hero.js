@@ -3,9 +3,8 @@
 
    Two modes, chosen in the editor (Hero → Hero visual):
 
-   • scene  A soft gradient blob with film grain that floats across the whole
-            hero and follows the cursor: it grows while the cursor moves and
-            shrinks when it stops. No image files needed.
+   • scene  A radial field of luminous purple lines that follows the cursor
+            and subtly expands/contracts with pointer movement.
    • photo  Your photo, shown with a liquid lens under the cursor. If the
             photo is black & white, colour is revealed around the pointer.
 
@@ -86,47 +85,28 @@
   function isDark() { return root.getAttribute('data-theme') !== 'light'; }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
-  /* -------------------------------- gradient blob ---------------------------------- */
-  // One soft, irregular shape with a magenta -> coral -> amber gradient and film grain.
-  // It floats across the whole hero, follows the cursor, stretches along its direction of travel,
-  // grows while the cursor moves and shrinks again when it stops.
+  /* ----------------------------- interactive ray pattern --------------------------- */
 
   var SCENE = [
     'uniform vec2 uRes; uniform vec2 uP; uniform vec2 uV; uniform float uR; uniform float uSpeed; uniform float uTime;',
     'varying vec2 vUv;',
-    'float hash(vec2 p){ vec3 q = fract(vec3(p.xyx) * 0.1031); q += dot(q, q.yzx + 33.33); return fract((q.x + q.y) * q.z); }',
     'void main(){',
     '  float asp = uRes.x / uRes.y;',
     '  vec2 p = vec2(vUv.x * asp, vUv.y) - uP;',
-    // squash and stretch along the direction of travel (area stays roughly constant)
-    '  float sp = length(uV);',
-    '  vec2 dir = sp > 0.0001 ? uV / sp : vec2(1.0, 0.0);',
-    '  float st = 1.0 + min(sp * 9.0, 0.6);',
-    '  vec2 q = vec2(dot(p, dir) / st, dot(p, vec2(-dir.y, dir.x)) * sqrt(st));',
-    // an irregular, pebble-like outline: never a circle, livelier when moving
-    '  float th = atan(p.y, p.x);',
-    '  float live = 1.0 + min(uSpeed * 9.0, 0.9);',
-    '  float w = (0.15 * sin(2.0 * th + uTime * 0.5 + 1.2) + 0.08 * sin(3.0 * th - uTime * 0.7) + 0.03 * sin(5.0 * th + uTime * 1.0 + 2.0)) * live;',
-    '  float d = length(q) - uR * (1.0 + w);',
-    // film grain, re-rolled about 24 times a second
-    '  float f = floor(uTime * 24.0);',
-    '  float g = hash(gl_FragCoord.xy + f * vec2(17.0, 31.0));',
-    '  float g2 = hash(gl_FragCoord.yx * 1.31 + f * vec2(53.0, 7.0));',
-    // soft edge that dissolves into grain
-    '  float edge = 0.016 + min(uSpeed * 0.5, 0.03);',
-    '  float alpha = 1.0 - smoothstep(-edge, edge, d + (g - 0.5) * 0.032);',
-    // gradient across the shape, slowly turning: magenta-pink -> coral -> amber
-    '  float ang = 0.78 + sin(uTime * 0.25) * 0.5;',
-    '  float t = dot(q / uR, vec2(cos(ang), sin(ang)));',
-    '  float k = clamp(t * 0.5 + 0.5, 0.0, 1.0);',
-    '  vec3 c0 = vec3(0.86, 0.22, 0.52), c1 = vec3(0.95, 0.37, 0.40), c2 = vec3(1.00, 0.66, 0.18);',
-    '  vec3 col = k < 0.5 ? mix(c0, c1, smoothstep(0.0, 0.5, k)) : mix(c1, c2, smoothstep(0.5, 1.0, k));',
-    '  col += 0.10 * smoothstep(0.9, 0.0, length(q / uR - vec2(-0.35, -0.40)));',      // soft highlight, top left
-    '  col += (g2 - 0.5) * 0.10 * (1.0 + 1.4 * smoothstep(-0.12, 0.02, d));',          // grain, stronger at the rim
-    // a little grainy dust just outside the shape
-    '  float dust = step(1.0 - 0.11 * smoothstep(0.13, 0.0, d), g) * 0.5;',
-    '  float a = max(alpha, dust);',
-    '  gl_FragColor = vec4(clamp(col, 0.0, 1.0) * a, a);',
+    '  float radius = length(p);',
+    '  float angle = atan(p.y, p.x);',
+    '  float count = 56.0;',
+    '  float phase = fract((angle + 3.14159265) / 6.2831853 * count);',
+    '  float lineDist = min(phase, 1.0 - phase);',
+    '  float width = 0.018 + min(uSpeed * 0.012, 0.012);',
+    '  float ray = 1.0 - smoothstep(width * 0.35, width, lineDist);',
+    '  float fade = smoothstep(0.035, 0.22, radius) * (1.0 - smoothstep(1.0 + uR, 1.55 + uR, radius));',
+    '  float shimmer = 0.72 + 0.28 * sin(radius * 21.0 - uTime * 1.8 + sin(angle * 3.0));',
+    '  float bright = exp(-pow((radius - (0.20 + uR * 0.15)) * 5.2, 2.0));',
+    '  vec3 purple = mix(vec3(0.17, 0.035, 0.30), vec3(0.53, 0.19, 0.86), shimmer);',
+    '  vec3 col = mix(purple, vec3(0.92, 0.72, 1.0), bright * 0.92);',
+    '  float alpha = ray * fade * (0.35 + bright * 0.65);',
+    '  gl_FragColor = vec4(col * alpha, alpha);',
     '}'
   ].join('\n');
 
@@ -150,7 +130,7 @@
     resize();
     if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host); else window.addEventListener('resize', resize);
 
-    var cx = aspect * 0.64, cy = 0.46;                           // cursor, in hero heights (starts where the blob rests)
+    var cx = aspect * 0.72, cy = 0.50;                           // cursor, in hero heights (starts where the pattern rests)
     var lcx = cx, lcy = cy, inside = false;
     var P = { x: cx, y: cy }, V = { x: 0, y: 0 }, speed = 0;
 
@@ -163,23 +143,23 @@
     }
 
     function draw(time, dt) {
-      // where it is heading: the cursor while the cursor is over the hero, otherwise a slow wander across the whole width
-      var gx = inside ? cx : aspect * (0.5 + 0.30 * Math.sin(time * 0.23));
-      var gy = inside ? cy : 0.5 + 0.26 * Math.sin(time * 0.31 + 1.0);
+      // Keep the rays anchored to the pointer, with a slow ambient drift at rest.
+      var gx = inside ? cx : aspect * (0.72 + 0.025 * Math.sin(time * 0.23));
+      var gy = inside ? cy : 0.5 + 0.025 * Math.sin(time * 0.31 + 1.0);
 
       // cursor speed: rises quickly, fades slowly
       var inst = inside ? Math.hypot(cx - lcx, cy - lcy) / dt : 0;
       lcx = cx; lcy = cy;
       speed += (inst - speed) * (inst > speed ? Math.min(1, 0.35 * dt) : Math.min(1, 0.035 * dt));
 
-      // the blob drifts after the cursor; its own velocity drives the stretch
+      // The focal point eases after the cursor; movement gently opens the rays.
       var px = P.x, py = P.y;
       var k = Math.min(1, 0.085 * dt);
       P.x += (gx - P.x) * k; P.y += (gy - P.y) * k;
       V.x += ((P.x - px) / dt - V.x) * Math.min(1, 0.2 * dt);
       V.y += ((P.y - py) / dt - V.y) * Math.min(1, 0.2 * dt);
 
-      var r = 0.095 + Math.min(speed * 4.6, 0.20) + 0.006 * Math.sin(time * 1.5);     // bigger when moving, smaller at rest
+      var r = 0.10 + Math.min(speed * 1.8, 0.20) + 0.008 * Math.sin(time * 1.5);
       paint(r, speed, time);
       return true;
     }

@@ -211,7 +211,7 @@ function badgeSvg(text) {
       </a>`;
 }
 
-// The interactive layer behind the hero text: a gradient blob that follows the cursor (or an interactive photo).
+// The interactive layer behind the hero text: a radial ray pattern (or an interactive photo).
 function heroVisual(c, o, root) {
   const h = c.hero;
   const kind = h.visual === 'photo' && h.image ? 'photo' : 'scene';
@@ -220,7 +220,7 @@ function heroVisual(c, o, root) {
     : '<div class="hero-orb" aria-hidden="true"></div>';
   const attrs = kind === 'photo'
     ? `${h.imageGrayscale === false ? '' : ' data-gray'}`
-    : ' role="img" aria-label="Interactive gradient blob"';
+    : ' role="img" aria-label="Interactive purple radial light pattern"';
   return `<div class="hero-visual" data-visual="${kind}"${attrs}>
         ${inner}
         ${badgeSvg(h.badge)}

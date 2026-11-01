@@ -120,18 +120,19 @@ a:hover .ch > span, a:focus-visible .ch > span { transform: translateY(-100%); }
 .link-cta .arrow { color: var(--accent); transition: transform .3s var(--ease); }
 .link-cta:hover .arrow { transform: translateX(6px); }
 
-/* The interactive layer behind the hero text: it spans the whole hero, no panel, no border.
-   hero.js adds the canvas; the blob follows the cursor across the full width. */
+/* The interactive radial line pattern behind the hero text. */
 .hero-visual { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .hero-visual[data-visual="photo"] > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .4s var(--ease); }
 .hero-visual[data-visual="photo"][data-gray] > img { filter: grayscale(1) contrast(1.05); }
 .hero-visual.is-live > img, .hero-visual.is-live .hero-orb { opacity: 0; }
 
-/* Shown while the blob loads, or if WebGL is unavailable: one soft gradient shape */
+/* Shown while WebGL loads or is unavailable. */
 .hero-orb { position: absolute; inset: 0; transition: opacity .4s var(--ease); }
-.hero-orb::before { content: ""; position: absolute; left: 62%; top: 46%; width: min(22vw, 34vh); aspect-ratio: 1; border-radius: 46% 54% 52% 48% / 55% 45% 55% 45%; filter: blur(14px); transform: translate(-50%, -50%);
-  background: linear-gradient(135deg, #dc3a85 0%, #f0604f 50%, #ffa930 100%); }
+.hero-orb::before { content: ""; position: absolute; inset: 0;
+  background: repeating-conic-gradient(from 0deg at 72% 50%, rgba(150, 76, 219, .68) 0deg .45deg, transparent .55deg 6.43deg);
+  -webkit-mask-image: radial-gradient(ellipse at 72% 50%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 72% 50%, #000 0%, transparent 72%); }
 
 .badge { position: absolute; z-index: 3; pointer-events: auto; right: clamp(14px, 2.4vw, 40px); bottom: clamp(14px, 2.4vw, 40px); width: clamp(104px, 10.5vw, 168px); aspect-ratio: 1; display: grid; place-items: center; color: var(--fg); }
 .badge > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }

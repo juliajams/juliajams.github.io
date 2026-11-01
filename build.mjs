@@ -1,5 +1,8 @@
 // build.mjs — compiles content/site.json into docs/, the finished website.
-//   docs/  = the public site
+//
+//   docs/  = the public site (what visitors see). Safe to host anywhere.
+//   everything else (content/, src/, admin/, this script) = your private workshop.
+//
 // Usage:  node build.mjs        (no dependencies; Node 18+)
 
 import { readFile, writeFile, mkdir, rm, cp } from 'node:fs/promises';

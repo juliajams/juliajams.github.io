@@ -1,3 +1,7 @@
+// serve.mjs — starts the visual editor on your own computer. No installs needed (Node 18+).
+//   node serve.mjs          → http://localhost:8000/admin/   (opens automatically)
+// It only listens on this computer (127.0.0.1), so nobody else can reach it.
+
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, join, normalize, dirname } from 'node:path';
